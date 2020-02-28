@@ -1,0 +1,20 @@
+{
+  "name": "pr-stats",
+  "version": "1.0.0",
+  "description": "PR States based on a github URL",
+  "main": "index.js",
+  "bin": "./index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Shihrer",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/rest": "^17.0.0",
+    "axios": "^0.19.2",
+    "yargs": "^15.1.0"
+  },
+  "devDependencies": {
+    "@types/yargs": "^15.0.4"
+  }
+}
