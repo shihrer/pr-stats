@@ -1,4 +1,10 @@
 const { Octokit } = require("@octokit/rest");
+const {
+  parseISO,
+  differenceInBusinessDays,
+  differenceInMinutes,
+  addBusinessDays
+} = require("date-fns");
 
 exports.prStats = async (url, apiKey) => {
   const myUrl = new URL(url);
@@ -16,5 +22,30 @@ exports.prStats = async (url, apiKey) => {
   }
 
   const { created_at, state, closed_at } = pr.data;
-  console.log(`${state}\t${created_at}\t${first_reviewed}\t${closed_at}`);
+  const daysToReview = differenceInBusinessDays(
+    parseISO(first_reviewed),
+    parseISO(created_at)
+  );
+
+  let minutesToReview = differenceInMinutes(
+    parseISO(first_reviewed),
+    addBusinessDays(parseISO(created_at), daysToReview)
+  );
+
+  const daysToClose = differenceInBusinessDays(
+    parseISO(closed_at),
+    parseISO(created_at)
+  );
+
+  let minutesToClose = differenceInMinutes(
+    parseISO(closed_at),
+    addBusinessDays(parseISO(created_at), daysToClose)
+  );
+
+  minutesToReview += daysToReview * 1440;
+  minutesToClose += daysToClose * 1440;
+
+  console.log(
+    `${state}\t${created_at}\t${first_reviewed}\t${closed_at}\t${minutesToReview}\t${minutesToClose}`
+  );
 };
